@@ -18,8 +18,9 @@
                     $tweetContainer.html('');
                     while(index >= 0){
                         var tweet = streams.home[index];
+                        var tweetDate = tweet.created_at.getHours() + ':' + tweet.created_at.getMinutes() + ':' + tweet.created_at.getSeconds();
                         var $tweet = $('<div></div>');
-                        $tweet.text('@' + tweet.user + ': ' + tweet.message);
+                        $tweet.text(tweetDate + ' @' + tweet.user + ': ' + tweet.message);
                         $tweet.appendTo($tweetContainer);
                         index -= 1;
                     }
