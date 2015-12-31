@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="jquery.js"></script>
-        <script src="data_generator.js"></script>
-    </head>
-    <body>
+<head>
+	<script src="jquery.js"></script>
+	<script src="data_generator.js"></script>
+</head>
+<body>
 
-        <button class='refresh'>Refresh</button>
-        <div class="tweet-container"></div>
+	<button class='refresh'>Refresh</button>
+	<div class="tweet-container"></div>
 
-        <script>
-            $(document).ready(function(){
+	<script>
+		$(document).ready(function(){
 
-                function loadTweets() {
-                    var $tweetContainer = $('.tweet-container');
-                    var index = streams.home.length - 1;
-                    $tweetContainer.html('');
-                    while(index >= 0){
-                        var tweet = streams.home[index];
-                        var tweetDate = tweet.created_at.getHours() + ':' + tweet.created_at.getMinutes() + ':' + tweet.created_at.getSeconds();
-                        var $tweet = $('<div></div>');
-                        $tweet.text(tweetDate + ' @' + tweet.user + ': ' + tweet.message);
-                        $tweet.appendTo($tweetContainer);
-                        index -= 1;
-                    }
-                }
+			function loadTweets() {
+				var $tweetContainer = $('.tweet-container');
+				var index = streams.home.length - 1;
+				$tweetContainer.html('');
+				while(index >= 0){
+					var tweet = streams.home[index];
+					var tweetDate = tweet.created_at.getHours() + ':' + ('0' + tweet.created_at.getMinutes()).slice(-2) + ':' + ('0' + tweet.created_at.getSeconds()).slice(-2);
+					var $tweet = $('<div class=\'' + tweet.user + ' tweet\'></div>');
+					$tweet.html(tweetDate + ' @' + tweet.user + ': ' + tweet.message);
+					$tweet.appendTo($tweetContainer);
+					index -= 1;
+				}
 
-                loadTweets();
-                setInterval(loadTweets, 10000);
+				$('.tweet').on('click', function(event) {
+					var selected = $(this).attr('class').split(' ')[0];
+					$('.tweet').not('.' + selected).remove();
+				});
+			}
 
-                $('.refresh').on('click', function(event) {
-                    loadTweets();
-                });
-            });
-        </script>
-    </body>
+			$('.refresh').on('click', function(event) {
+				loadTweets();
+			});
+
+			loadTweets();
+            //setInterval(loadTweets, 10000);
+        });
+	</script>
+</body>
 </html>
